@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="former">
+
+  <xacro:include filename="$(find former_description)/urdf/include/tim571.urdf.xacro" />
+  <xacro:include filename="$(find former_description)/urdf/include/d435.urdf.xacro" />
+
+  <xacro:property name="PI" value="3.1415926535897931" />
+
+  <material name="black">
+    <color rgba="0.15 0.15 0.15 1.0" />
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://former_description/meshes/former.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://former_description/meshes/former.dae" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="left_wheel_link" />
+    <origin xyz="0 0.15 0.015" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+  </joint>
+
+  <link name="left_wheel_link">
+    <visual>
+      <origin xyz="0 -0.0234 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://former_description/meshes/wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://former_description/meshes/wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="right_wheel_link" />
+    <origin xyz="0 -0.15 0.015" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+  </joint>
+
+  <link name="right_wheel_link">
+    <visual>
+      <origin xyz="0 0.0234 0" rpy="0 0 ${PI}" />
+      <geometry>
+        <mesh filename="package://former_description/meshes/wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 ${PI}" />
+      <geometry>
+        <mesh filename="package://former_description/meshes/wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_link" />
+    <origin xyz="0.134 0 0.067" rpy="0 0 0" />
+  </joint>
+
+  <link name="imu_link" />
+
+  <joint name="left_ultrasonic_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="left_ultrasonic" />
+    <origin xyz="0.1956 0.0968 0.0865" rpy="0 0 0" />
+  </joint>
+
+  <link name="left_ultrasonic" />
+
+  <joint name="right_ultrasonic_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="right_ultrasonic" />
+    <origin xyz="0.1956 -0.0968 0.0865" rpy="0 0 0" />
+  </joint>
+
+  <link name="right_ultrasonic" />
+
+  <xacro:sensor_tim571 parent="base_link">
+    <origin xyz="0.1592 0 0.2285" rpy="${PI} 0 0" />
+  </xacro:sensor_tim571>
+
+  <xacro:sensor_d435 parent="base_link" name="camera">
+    <origin xyz="0.178 0 0.0686" rpy="0 -${PI/12} 0" />
+  </xacro:sensor_d435>
+
+
+  <link name="top_structure">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 -${PI/2}"/>
+      <geometry>
+        <mesh filename="package://former_description/meshes/top_structure_roas.STL"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.2 0.2 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://former_description/meshes/top_structure_roas.STL"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="top_structure_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="top_structure"/>
+    <origin xyz="0 0 0.29" rpy="0 0 0"/>
+  </joint>
+
+  <!-- <link name="matterport_link" />
+
+  <joint name="matterport_joint" type="fixed">
+    <parent link="top_structure" />
+    <child link="matterport_link" />
+    <origin xyz="0 0 0.45" rpy="0 0 0" />
+  </joint> -->
+
+</robot>
